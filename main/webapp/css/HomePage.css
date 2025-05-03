@@ -1,0 +1,100 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: white;
+}
+
+main{
+    padding: 0px 20px 0px 20px;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.hero{
+    position: relative;
+    width: 95%;
+    height: 95vh;
+}
+
+.hero-image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-arrows{
+    position: absolute;
+    top: 60%;
+    left: 0%;
+    float: left;
+    gap: 20px;
+    width: 100%;
+    display: none;
+}
+
+main > i{
+    font-size: 2.5em;
+    cursor: pointer;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.fa-caret-right{
+    float: right;
+}
+
+.games-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.games-row{
+    position: relative;
+    display: flex;
+    height: 60vh;
+    width: 100%;
+    overflow: hidden;
+    gap: 20px;
+    align-items: center;
+}
+
+.games-row > h2{
+    position: absolute;
+    top: 0;
+    margin-top: 5px;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.games-row > h2:hover{
+    color: rgb(81, 81, 206);
+    transition: color 0.5s;
+}
+
+.game-card{
+    width: 20vw;
+    height: 80%;
+    cursor: pointer;
+}
+
+.game-card:hover{
+    transform: scale(1.05);
+    transition: transform 0.5s;
+}
+
+.game-card > img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* display: none; */
+}
+
