@@ -1,0 +1,169 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.main-header {
+  width: 90%;
+  margin:5% 0px 0px 6.5% ;
+  border: 0.1% solid #444;
+  border-radius: 1%;
+}
+
+.container {
+  width: 90%;
+  margin: 2% auto 5% auto;
+  border: 0.1% solid #444;
+  border-radius: 1%;
+  padding: 2%;
+  background-color: #111;
+  box-shadow: 0 0 1% rgba(255, 255, 255, 0.1);
+}
+
+/* Grid setup for both header and review rows */
+.header,
+.review-item {
+  display: grid;
+  grid-template-columns: 40% 20% 20% 20%;
+  align-items: flex-start;
+}
+
+/* Header styles */
+.header div,
+.review-item > div {
+  padding: 0 4%;
+  border-right: 0.1% solid #444;
+}
+
+.header div:last-child,
+.review-item > div:last-child {
+  border-right: none;
+}
+
+.header {
+  font-weight: bold;
+  padding-bottom: 1%;
+  border-bottom: 0.2% solid #666;
+  margin-bottom: 2%;
+  color: #ddd;
+}
+
+/* Review item styles */
+.review-item {
+  padding: 2% 0;
+  border-bottom: 0.1% solid #333;
+  transition: background-color 0.2s ease;
+}
+
+.review-item:hover {
+  background-color: #1a1a1a;
+}
+
+/* User info section (avatar + text) */
+.user-info {
+  display: flex;
+  gap: 5%;
+}
+
+.avatar {
+  width: 12%;
+  aspect-ratio: 1 / 1;
+  background-color: #ccc;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 0.2% solid #555;
+}
+
+.user-details {
+  width: 80%;
+}
+
+.username {
+  font-weight: bold;
+  margin: 0;
+  color: #fff;
+}
+
+.comment {
+  font-size: 90%;
+  color: #bbb;
+  margin-top: 2%;
+}
+
+/* Other columns */
+.game,
+.date,
+.edit {
+  font-size: 90%;
+  color: #ddd;
+  display: flex;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+/* Game links */
+.game a {
+  color: #1e90ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.game a:hover {
+  text-decoration: underline;
+  color: #63b3ed;
+}
+
+/* Remove button */
+.edit button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  background-color: #b73333;
+}
+
+.edit button:hover {
+  background-color: #ff1a1a;
+}
+
+/* To select the pages */
+.pages {
+  display: flex;
+  padding-right: 3.8%;
+  justify-content: space-between;
+  margin-top: 4%;
+  align-items: center;
+  border-top: 0.2% solid #666;
+}
+
+.pages button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.pages button:hover {
+  background-color: #ddd;
+}
+
+.PageNumber {
+  color: #b0abab;
+  position: relative;
+  left: 0.1%;
+}
+
+.nextPage{
+  position: relative;
+  
+}

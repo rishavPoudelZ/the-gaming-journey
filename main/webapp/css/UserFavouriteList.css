@@ -1,0 +1,174 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: content-box;
+    
+}
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: black;
+    color: #f9fafb;
+    
+}
+
+.favorite-list-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.favorite-list-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #ffffff;
+    padding: 10px;
+    
+    border-radius: 8px;
+    width: 95%;
+    max-width: 1200px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+.table-container {
+    width: 95%;
+    max-width: 1200px;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.favorite-list-table {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-collapse: collapse;
+    
+    color: #f8fafc;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table-header {
+    display: flex;
+    gap: 35px;
+    width: 100%;
+    padding: 10px 0px;
+    font-weight: 600;
+    border-bottom: 2px solid #4a5568;
+    color: #ffffff;
+}
+
+.table-header > div {
+    text-align: center;
+}
+
+
+.table-header > .number-header {
+    width: 4%;
+}
+
+.table-header > .image-header {
+    width: 8%;
+}
+.table-header > .title-header {
+    width: 30%;
+}
+
+.table-header > .rating-header {
+    width: 15%;
+    
+}
+
+.table-header > .type-header {
+    width: 16%;
+}
+
+.table-header > .tags-header{
+    width: 16%;
+}
+
+.table-header > .actions-header{
+    width: 10%;
+}
+
+.table-body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-row {
+    display: flex;
+    gap: 35px;
+    width: 100%;
+    padding: 10px 0px;
+    text-align: left;
+    border-bottom: 1px solid #4a5568;
+}
+
+.table-row > div {
+    text-align: center;
+}
+
+.table-row:hover {
+    background-color: #1d1e20;
+    transition: background-color 0.3s ease;
+}
+
+.cell-image {
+    width: 8%;
+}
+
+.cell-number {
+    width: 4%;
+}
+
+.cell-title {
+    width: 30%;
+}
+
+.cell-rating {
+    width: 15%;
+}
+
+.cell-type {
+    width: 15%;
+    
+}
+
+.cell-tags{
+    width: 16%;
+}
+
+.cell-actions{
+    width: 10%;
+}
+
+.table-row img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.table-row sub {
+    color: #a0aec0;
+    display: block;
+    font-size: 0.75rem;
+}
+
+.delete-button{
+    background-color: #f44336;
+    color: white;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.7rem;
+}
+
