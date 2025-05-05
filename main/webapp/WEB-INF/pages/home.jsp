@@ -1,4 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -26,56 +29,30 @@
         </main>
 
         <section style="padding: 30px;">
-            <div class="games-container">
-                <div class="games-row">
-                    <h2>New Releases <i class="fa fa-caret-right"
-                            aria-hidden="true"></i></h2>
-                    <div class="game-card">
-                        <img src="${pageContext.request.contextPath}/assests/2k25.jpeg" loading="lazy"
-                            alt="2k25">
-                    </div>
-                    <div class="game-card">
-                        <img src="${pageContext.request.contextPath}/assests/fronttiers.jpeg" loading="lazy"
-                            alt="2">
-                    </div>
-                    <div class="game-card">
-                        <img src="${pageContext.request.contextPath}/assests/splitfiction.png" loading="lazy"
-                            alt="3">
-                    </div>
-                    <div class="game-card">
-                        <img src="${pageContext.request.contextPath}/assests/avowed.jpeg" loading="lazy"
-                            alt="4">
-                    </div>
-                    <div class="game-card">
-                        <img src="${pageContext.request.contextPath}/assests/monsterhunnter.jpeg" loading="lazy"
-                            alt="5">
-                    </div>
-                </div>
-                <div class="games-row">
-                    <h2>Top Games <i class="fa fa-caret-right"
-                            aria-hidden="true"></i></h2>
-                    <div class="game-card">
-                        <img src="${pageContext.request.contextPath}/assests/balduresgate.jpeg" loading="lazy"
-                            alt="2k25">
-                    </div>
-                    <div class="game-card">
-                        <img src="${pageContext.request.contextPath}/assests/elden ring.png" loading="lazy"
-                            alt="2">
-                    </div>
-                    <div class="game-card">
-                        <img src="${pageContext.request.contextPath}/assests/discoelysum.jpeg" loading="lazy"
-                            alt="3">
-                    </div>
-                    <div class="game-card">
-                        <img src="${pageContext.request.contextPath}/assests/slaythespire.jpeg" loading="lazy"
-                            alt="4">
-                    </div>
-                    <div class="game-card">
-                        <img src="${pageContext.request.contextPath}/assests/monsterhunnter.jpeg" loading="lazy"
-                            alt="5">
-                    </div>
-                </div>
-
+            <div class="games-container">            
+            	<c:set var="counter" value="0" />
+				<c:forEach var="game" items="${gamesList}" varStatus="status">
+				    <c:if test="${status.index % 5 == 0}">
+				        <c:if test="${status.index != 0}">
+				            </div> <!-- close previous games-row -->
+				        </c:if>
+				        <div class="games-row">
+				            <h2>Top Games <i class="fa fa-caret-right" aria-hidden="true"></i></h2>
+				    </c:if>
+				
+				    <div class="game-card">
+				        <img 
+				            src="${pageContext.request.contextPath}/assets/gamesImages/${fn:replace(game.title, ' ', '_')}/${fn:replace(game.title, ' ', '_')}_image1.jpg" 
+				            alt="${game.title}" 
+				            loading="lazy"
+				        />
+				    </div>
+				
+				    <c:if test="${status.last}">
+				        </div> <!-- close last games-row -->
+				    </c:if>
+				</c:forEach>
+            
             </div>
         </section>
 	

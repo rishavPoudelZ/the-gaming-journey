@@ -81,7 +81,7 @@
                     <span class="dots" onclick="toggleDropdown()">&#8942;</span>
                     <div class="dropdown" id="userDropdown">
                         <a href="User-Dashboard">Dashboard</a>
-                        <a href="logout">Logout</a>
+                        <a href="Logout">Logout</a>
                     </div>
                 </div>
             <% } else { %>

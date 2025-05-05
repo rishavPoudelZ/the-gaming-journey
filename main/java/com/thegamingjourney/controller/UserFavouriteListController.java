@@ -16,7 +16,7 @@ private static final long serialVersionUID = 1L;
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/pages/AdminGameList.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/pages/UserFavouriteList.jsp").forward(request, response);
 		}
 
 }

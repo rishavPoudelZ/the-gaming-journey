@@ -62,6 +62,7 @@ main > i{
     overflow: hidden;
     gap: 20px;
     align-items: center;
+    flex-wrap: wrap; /* allow wrapping */
 }
 
 .games-row > h2{
@@ -81,7 +82,7 @@ main > i{
 }
 
 .game-card{
-    width: 20vw;
+    width: calc((100% - 80px) / 5); /* 5 cards with 4 gaps of 20px = 80px */
     height: 80%;
     cursor: pointer;
 }
