@@ -1,86 +1,84 @@
-package com.gamereview.model;
+package com.thegamingjourney.model; 
 
 import java.time.LocalDate;
 
-/**
- * Model class representing a user review.
- */
-public class ReviewModel {
+public class Review {
+    private int reviewId;
+    private int userId;
+    private int gameId;
+    private String reviewText;
+    private LocalDate reviewDate;
+    private int likes;
+    private int dislikes;
 
-    private int id;
-    private String username;
-    private String text;
-    private String gameTitle;
-    private String gameSlug;
-    private LocalDate datePosted;
+    // Constructors
+    public Review() {}
 
-    public ReviewModel() {
+    public Review(int reviewId, int userId, int gameId, String reviewText, 
+                 LocalDate reviewDate, int likes, int dislikes) {
+        this.reviewId = reviewId;
+        this.userId = userId;
+        this.gameId = gameId;
+        this.reviewText = reviewText;
+        this.reviewDate = reviewDate;
+        this.likes = likes;
+        this.dislikes = dislikes;
     }
-
-    public ReviewModel(int id, String username, String text, String gameTitle, String gameSlug, LocalDate datePosted) {
-        this.id = id;
-        this.username = username;
-        this.text = text;
-        this.gameTitle = gameTitle;
-        this.gameSlug = gameSlug;
-        this.datePosted = datePosted;
-    }
-
-    public ReviewModel(String username, String text, String gameTitle, String gameSlug, LocalDate datePosted) {
-        this.username = username;
-        this.text = text;
-        this.gameTitle = gameTitle;
-        this.gameSlug = gameSlug;
-        this.datePosted = datePosted;
-    }
-
+    
     // Getters and Setters
 
-    public int getId() {
-        return id;
+    public int getReviewId() {
+        return reviewId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setReviewId(int reviewId) {
+        this.reviewId = reviewId;
     }
 
-    public String getUsername() {
-        return username;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getText() {
-        return text;
+    public int getGameId() {
+        return gameId;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 
-    public String getGameTitle() {
-        return gameTitle;
+    public String getReviewText() {
+        return reviewText;
     }
 
-    public void setGameTitle(String gameTitle) {
-        this.gameTitle = gameTitle;
+    public void setReviewText(String reviewText) {
+        this.reviewText = reviewText;
     }
 
-    public String getGameSlug() {
-        return gameSlug;
+    public LocalDate getReviewDate() {
+        return reviewDate;
     }
 
-    public void setGameSlug(String gameSlug) {
-        this.gameSlug = gameSlug;
+    public void setReviewDate(LocalDate reviewDate) {
+        this.reviewDate = reviewDate;
     }
 
-    public LocalDate getDatePosted() {
-        return datePosted;
+    public int getLikes() {
+        return likes;
     }
 
-    public void setDatePosted(LocalDate datePosted) {
-        this.datePosted = datePosted;
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
-}
+
+    public int getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(int dislikes) {
+        this.dislikes = dislikes;
+    }

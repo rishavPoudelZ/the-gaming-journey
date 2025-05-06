@@ -2,69 +2,64 @@ package com.thegamingjourney.service;
 
 import com.thegamingjourney.config.DbConfig;
 import com.thegamingjourney.model.Review;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Service class for retrieving user reviews from the database.
- * 
- * This class connects to the database, fetches review records, and returns 
- * them as a list of Review model objects. It handles database access logic 
- * and error handling internally.
- */
 public class AdminUserReviewsService {
-    private Connection dbConn;
-    private boolean isConnectionError = false;
+    private static final int PAGE_SIZE = 10;
 
-    /**
-     * Constructor initializes the database connection.
-     * Sets a flag if a connection error occurs.
-     */
-    public AdminUserReviewsService() {
-        try {
-            dbConn = DbConfig.getDbConnection();
-        } catch (SQLException | ClassNotFoundException ex) {
-            ex.printStackTrace();  // Ideally use a logger
-            isConnectionError = true;
+    public List<Review> getReviews(int page) throws SQLException, ClassNotFoundException {
+        List<Review> reviews = new ArrayList<>();
+        String sql = "SELECT r.reviewId, r.userId, r.gameId, r.reviewText, " +
+                     "r.reviewDate, r.likes, r.dislikes " +
+                     "FROM reviews r " +
+                     "JOIN users u ON r.userId = u.userId " +
+                     "JOIN games g ON r.gameId = g.gameId " +
+                     "ORDER BY r.reviewDate DESC LIMIT ? OFFSET ?";
+
+        try (Connection conn = DbConfig.getDbConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, PAGE_SIZE);
+            stmt.setInt(2, (page - 1) * PAGE_SIZE);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Review review = new Review();
+                    review.setReviewId(rs.getInt("reviewId"));
+                    review.setUserId(rs.getInt("userId"));
+                    review.setGameId(rs.getInt("gameId"));
+                    review.setReviewText(rs.getString("reviewText"));
+                    review.setReviewDate(rs.getDate("reviewDate").toLocalDate());
+                    review.setLikes(rs.getInt("likes"));
+                    review.setDislikes(rs.getInt("dislikes"));
+                    reviews.add(review);
+                }
+            }
         }
+        return reviews;
     }
 
-    /**
-     * Retrieves all user reviews from the database.
-     * 
-     * @return A list of Review objects, or an empty list if none found or an error occurs.
-     */
-    public List<Review> getAllReviews() {
-        List<Review> reviews = new ArrayList<>();
-
-        if (isConnectionError) {
-            return reviews;  // Return empty list if DB connection failed
-        }
-
-        String sql = "SELECT review_id, game_title, username, rating, review_text FROM reviews";
-
-        try (PreparedStatement statement = dbConn.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-
-            while (resultSet.next()) {
-                Review review = new Review();
-                review.setId(resultSet.getInt("review_id"));
-                review.setGameTitle(resultSet.getString("game_title"));
-                review.setUsername(resultSet.getString("username"));
-                review.setRating(resultSet.getInt("rating"));
-                review.setText(resultSet.getString("review_text"));
-                reviews.add(review);
+    public int getTotalPages() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM reviews";
+        try (Connection conn = DbConfig.getDbConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            if (rs.next()) {
+                int total = rs.getInt(1);
+                return (int) Math.ceil((double) total / PAGE_SIZE);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();  // Ideally use a logger
         }
+        return 0;
+    }
 
-        return reviews;
+    public boolean deleteReview(int reviewId) throws SQLException {
+        String sql = "DELETE FROM reviews WHERE reviewId = ?";
+        try (Connection conn = DbConfig.getDbConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, reviewId);
+            return stmt.executeUpdate() > 0;
+        }
     }
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,20 +36,28 @@
     <c:choose>
       <c:when test="${not empty reviews}">
         <c:forEach var="review" items="${reviews}">
-          <div class="review-item">
+          <div class="review-item" data-review-id="${review.reviewId}">
             <div>
               <div class="user-info">
                 <div class="user-details">
-                  <p class="username">${review.username}</p>
-                  <p class="comment">${review.text}</p>
+                  <p class="username">User ID: ${review.userId}</p>
+                  <p class="comment">${review.reviewText}</p>
                 </div>
               </div>
             </div>
             <div class="game">
-              <a href="${pageContext.request.contextPath}/game/${review.gameSlug}">${review.gameTitle}</a>
+              <a href="${pageContext.request.contextPath}/game/${review.gameId}">Game ID: ${review.gameId}</a>
             </div>
-            <div class="date">${review.datePosted}</div>
-            <div class="edit"><button class="remove-btn">Remove</button></div>
+            <div class="date">
+              <fmt:formatDate value="${review.reviewDate}" pattern="yyyy-MM-dd" />
+            </div>
+            <div class="edit">
+              <form method="post" action="${pageContext.request.contextPath}/admin/reviews" class="delete-form">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="reviewId" value="${review.reviewId}">
+                <button type="submit" class="remove-btn">Remove</button>
+              </form>
+            </div>
           </div>
         </c:forEach>
       </c:when>
@@ -60,9 +69,17 @@
 
   <!-- Pagination -->
   <div class="pages">
-    <button id="prevPage"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous Page</button>
+    <c:if test="${currentPage > 1}">
+      <a href="${pageContext.request.contextPath}/admin/reviews?page=${currentPage - 1}">
+        <button id="prevPage"><i class="fa fa-arrow-left" aria-hidden="true"></i> Previous Page</button>
+      </a>
+    </c:if>
     <div class="PageNumber">Page ${currentPage} of ${totalPages}</div>
-    <button id="nextPage">Next Page <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+    <c:if test="${currentPage < totalPages}">
+      <a href="${pageContext.request.contextPath}/admin/reviews?page=${currentPage + 1}">
+        <button id="nextPage">Next Page <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+      </a>
+    </c:if>
   </div>
 </div>
 
@@ -70,19 +87,13 @@
 
 <!-- JavaScript -->
 <script>
-  document.querySelectorAll('.remove-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      const reviewItem = button.closest('.review-item');
-      reviewItem.remove();
+  // Confirmation for delete action
+  document.querySelectorAll('.delete-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+      if (!confirm('Are you sure you want to delete this review?')) {
+        e.preventDefault();
+      }
     });
-  });
-
-  document.getElementById('prevPage').addEventListener('click', () => {
-    alert('Previous page clicked!');
-  });
-
-  document.getElementById('nextPage').addEventListener('click', () => {
-    alert('Next page clicked!');
   });
 </script>
 

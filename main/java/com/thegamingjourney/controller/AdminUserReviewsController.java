@@ -2,56 +2,61 @@ package com.thegamingjourney.controller;
 
 import com.thegamingjourney.model.Review;
 import com.thegamingjourney.service.AdminUserReviewsService;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Servlet implementation class AdminUserReviewsController
- * 
- * Handles HTTP requests to display user reviews for admin users.
- * Interacts with AdminUserReviewsService to fetch review data and
- * forwards it to the JSP view.
- */
-@WebServlet(urlPatterns = {"/AdminUserReviews"})
+@WebServlet("/AdminUserReviews")
 public class AdminUserReviewsController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+    private AdminUserReviewsService reviewService = new AdminUserReviewsService();
 
-    // Service for retrieving user review data
-    private AdminUserReviewsService reviewService;
-
-    /**
-     * Default constructor initializes the service instance.
-     */
-    public AdminUserReviewsController() {
-        this.reviewService = new AdminUserReviewsService();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        try {
+            int page = getPageNumber(request);
+            List<Review> reviews = reviewService.getReviews(page);
+            int totalPages = reviewService.getTotalPages();
+            
+            request.setAttribute("reviews", reviews);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+            
+            request.getRequestDispatcher("/WEB-INF/pages/AdminUserReviews.jsp")
+                   .forward(request, response);
+        } catch (SQLException e) {
+            request.setAttribute("error", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/pages/error.jsp")
+                   .forward(request, response);
+        }
     }
 
-    /**
-     * Handles HTTP GET requests.
-     * Retrieves all user reviews and forwards them to the JSP page for display.
-     * 
-     * @param request  The HttpServletRequest object containing the request data.
-     * @param response The HttpServletResponse object used to return the response.
-     * @throws ServletException If a servlet-specific error occurs.
-     * @throws IOException      If an I/O error occurs.
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        // Retrieve all reviews from the service layer
-        List<Review> reviews = reviewService.getAllReviews();
+        String action = request.getParameter("action");
+        if ("delete".equals(action)) {
+            try {
+                int reviewId = Integer.parseInt(request.getParameter("reviewId"));
+                if (reviewService.deleteReview(reviewId)) {
+                    response.sendRedirect(request.getContextPath() + "/admin/reviews?deleted=true");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/admin/reviews?error=delete_failed");
+                }
+            } catch (Exception e) {
+                response.sendRedirect(request.getContextPath() + "/admin/reviews?error=invalid_request");
+            }
+        }
+    }
 
-        // Set the reviews in request scope
-        request.setAttribute("reviews", reviews);
-
-        // Forward to the admin review JSP page
-        request.getRequestDispatcher("/WEB-INF/pages/AdminUserReviews.jsp").forward(request, response);
+    private int getPageNumber(HttpServletRequest request) {
+        try {
+            return Integer.parseInt(request.getParameter("page"));
+        } catch (NumberFormatException e) {
+            return 1;
+        }
     }
 }
