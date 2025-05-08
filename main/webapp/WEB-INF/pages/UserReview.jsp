@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,7 +16,9 @@
   </head>
   <body>
     <jsp:include page="Header.jsp" />
-    <h1 class="main-header">Username's Reviews</h1>
+    <c:if test="${not empty userReviews}">
+	  <h1 class="main-header">${userReviews[0].username}'s Reviews</h1>
+	</c:if>
     <div class="container">
       <!-- Header Row -->
       <div class="header">
@@ -27,69 +30,49 @@
 
       <!-- Review List -->
       <div id="review-list">
+		  <c:choose>
+		    <c:when test="${empty userReviews}">
+		      <div style="text-align: center; font-size: 1.2em; padding: 20px;">You haven't posted any reviews yet.</div>
+		    </c:when>
+		    <c:otherwise>
+		      <c:forEach var="review" items="${userReviews}">
+		        <div class="review-item">
+		          <div>
+		            <div class="user-info">
+		              <div class="user-details">
+		                <p class="username">
+						  <a href="${pageContext.request.contextPath}/User-Dashboard">${review.username}</a>
+						</p>
+		                <p class="comment">${review.reviewText}</p>
+		              </div>
+		            </div>
+		          </div>
+		          <div class="game">
+					  <a href="${pageContext.request.contextPath}/Game?id=${review.gameId}">${review.gameTitle}</a>
+					</div>
+		          <div class="date">${review.reviewDate}</div>
+		          <div class="edit">
+					  <form method="post" action="${pageContext.request.contextPath}/My-Reviews">
+					    <input type="hidden" name="reviewId" value="${review.reviewId}" />
+					    <button type="submit" class="remove-btn">Remove</button>
+					  </form>
+					</div>
+		        </div>
+		      </c:forEach>
+		    </c:otherwise>
+		  </c:choose>
+		</div>
 
-        <!-- Review Item 1 -->
-        <div class="review-item">
-          <div>
-            <div class="user-info">
-              <div class="user-details">
-                <p class="username">UserName</p>
-                <p class="comment">Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit. Nullam vel odio vitae purus imperdiet
-                  tristique sed ut turpis.</p>
-              </div>
-            </div>
-          </div>
-          <div class="game"><a href="arkham-knight.html">Arkham Knight</a></div>
-          <div class="date">12/04/2025</div>
-          <div class="edit"><button class="remove-btn">Remove</button></div>
-        </div>
-
-        <!-- Review Item 2 -->
-        <div class="review-item">
-          <div>
-            <div class="user-info">
-              <div class="user-details">
-                <p class="username">AnotherUser</p>
-                <p class="comment">Cyberpunk is a visually stunning and
-                  ambitious game with some flaws, but I enjoyed it!</p>
-              </div>
-            </div>
-          </div>
-          <div class="game"><a href="cyberpunk.html">Cyberpunk</a></div>
-          <div class="date">15/04/2025</div>
-          <div class="edit"><button class="remove-btn">Remove</button></div>
-        </div>
-
-      </div>
-
-      <!-- Select pages -->
-      <div class="pages">
-        <button id="prevPage"><i class="fa fa-arrow-left"
-            aria-hidden="true"></i> Previous Page</button>
-        <div class="PageNumber">Page 1 of 50</div>
-        <button id="nextPage">Next Page <i class="fa fa-arrow-right"
-            aria-hidden="true"></i></button>
-      </div>
     </div>
     <jsp:include page="Footer.jsp" />
-
-    <!-- JavaScript -->
     <script>
-    document.querySelectorAll('.remove-btn').forEach(button => {
-      button.addEventListener('click', () => {
-        const reviewItem = button.closest('.review-item');
-        reviewItem.remove();
-      });
-    });
-
-    document.getElementById('prevPage').addEventListener('click', () => {
-      alert('Previous page clicked!');
-    });
-
-    document.getElementById('nextPage').addEventListener('click', () => {
-      alert('Next page clicked!');
-    });
-  </script>
+	  document.querySelectorAll('.remove-btn').forEach(button => {
+	    button.addEventListener('click', function (e) {
+	      if (!confirm('Are you sure you want to delete this review?')) {
+	        e.preventDefault();
+	      }
+	    });
+	  });
+	</script>
   </body>
 </html>

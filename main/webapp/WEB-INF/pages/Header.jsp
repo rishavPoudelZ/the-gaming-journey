@@ -1,5 +1,6 @@
 <%@ page import="com.thegamingjourney.util.CookieUtil" %>
 <%@ page import="jakarta.servlet.http.Cookie" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
     String loggedInUser = CookieUtil.getCookieValue(request, "tgj_username");
@@ -67,10 +68,10 @@
                 <img src="${pageContext.request.contextPath}/assests/Logo.png" alt="logo">
             </div>
             <nav class="nav-buttons">
-                <a href="Home">Home</a>
-                <a href="Games">Games</a>
-                <a href="Favourites">Favourites</a>
-                <a href="About-Us">About us</a>
+                <a href="<c:url value='/Home' />">Home</a>
+			    <a href="<c:url value='/Games' />">Games</a>
+			    <a href="<c:url value='/Favourites' />">Favourites</a>
+			    <a href="<c:url value='/About-Us' />">About us</a>
             </nav>
         </div>
         <div class="user-actions">

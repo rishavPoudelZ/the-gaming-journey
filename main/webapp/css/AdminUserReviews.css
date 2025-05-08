@@ -167,3 +167,13 @@ body {
   position: relative;
   
 }
+
+.username > a {
+	text-decoration: none;
+	color: white;
+	transition: color 1s;
+}
+
+.username > a:hover{
+	color: rgb(81, 81, 206);
+}

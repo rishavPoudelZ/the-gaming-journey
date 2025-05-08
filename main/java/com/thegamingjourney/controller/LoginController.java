@@ -30,6 +30,7 @@ public class LoginController extends HttpServlet {
             User user = loginService.getUserByUsername(username);
             if (user != null) {
                 SessionUtil.setAttribute(req, "user", user);
+                SessionUtil.setAttribute(req, "userId", user.getUserId());
                 resp.sendRedirect("Home");
                 return;
             }
@@ -49,6 +50,7 @@ public class LoginController extends HttpServlet {
 
         if (user != null) {
             SessionUtil.setAttribute(request, "user", user);
+            SessionUtil.setAttribute(request, "userId", user.getUserId());
             CookieUtil.addCookie(response, "tgj_username", username, 7 * 24 * 60 * 60); // 7 days
             CookieUtil.addCookie(response, "tgj_role", user.getRole(), 7 * 24 * 60 * 60); // Store role in cookie
             

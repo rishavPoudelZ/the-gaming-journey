@@ -1,5 +1,28 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.thegamingjourney.model.Game" %>
+<%@ page import="com.thegamingjourney.model.Review" %>
+<%@ page import="java.util.List" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<%@ page import="java.io.File" %>
+<%@ page import="java.util.Arrays" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
+<%
+    Game game = (Game) request.getAttribute("game");
+    List<Review> reviews = (List<Review>) request.getAttribute("reviews");
+%>
+
+
+<%
+    String gameTitleUnderscored = game.getTitle().replace(" ", "_");
+    String imageFolderPath = application.getRealPath("/assets/gamesImages/" + gameTitleUnderscored);
+    File imageDir = new File(imageFolderPath);
+    String[] imageFiles = imageDir.list((dir, name) -> name.matches(gameTitleUnderscored + "_image\\d+\\.jpg"));
+    Arrays.sort(imageFiles); // Ensure image1, image2... order
+%>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -17,30 +40,40 @@
     <jsp:include page="Header.jsp" />
     <div class="container">
 
-      <div class="banner">
-        <img src="${pageContext.request.contextPath}/assests/reddead0.jpg" alt="Game Banner">
-        <div class="banner-arrows"><i class="fa fa-angle-left" aria-hidden="true"></i><i class="fa fa-angle-right" aria-hidden="true"></i></i>
-        </div>
-      </div>
-
-      <div class="gallery-container">
-        <div class="gallery">
-          <img src="${pageContext.request.contextPath}/assests/reddead1.jpg" alt>
-          <img src="${pageContext.request.contextPath}/assests/reddead2.jpg" alt>
-          <img src="${pageContext.request.contextPath}/assests/reddead3.jpg" alt>
-          <img src="${pageContext.request.contextPath}/assests/reddead4.jpg" alt>
-          <img src="${pageContext.request.contextPath}/assests/reddead5.jpg" alt>
-          <img src="${pageContext.request.contextPath}/assests/reddead6.jpg" alt>
-        </div>
-      </div>
+      <!-- Banner (Always first image) -->
+		<div class="banner">
+		  <img id="main-banner" 
+		       src="${pageContext.request.contextPath}/assets/gamesImages/<%= gameTitleUnderscored %>/<%= imageFiles != null && imageFiles.length > 0 ? imageFiles[0] : "default.jpg" %>" 
+		       alt="${game.title}">
+		  <div class="banner-arrows">
+		    <i class="fa fa-angle-left" aria-hidden="true"></i>
+		    <i class="fa fa-angle-right" aria-hidden="true"></i>
+		  </div>
+		</div>
+		
+		<!-- Gallery Thumbnails -->
+		<div class="gallery-container">
+		  <div class="gallery">
+		    <% if (imageFiles != null) {
+		         for (String fileName : imageFiles) {
+		    %>
+		      <img src="${pageContext.request.contextPath}/assets/gamesImages/<%= gameTitleUnderscored %>/<%= fileName %>" 
+		           alt="<%= fileName %>" 
+		           onclick="changeBannerImage(this)">
+		    <%   }
+		       } else { %>
+		      <p>No screenshots available.</p>
+		    <% } %>
+		  </div>
+		</div>
 
       <div class="game-header">
-        <h1>Red Dead Redemption</h1>
-        <div class="rating">
-          <span>★ ★ ★ ★ ★</span>
-          <span class="score">4.7</span>
-        </div>
-      </div>
+	    <h1><%= game.getTitle() %></h1>
+	    <div class="rating">
+	      <span>★ ★ ★ ★ ★</span>
+	      <span class="score"><%= game.getAvgRating() %></span>
+	    </div>
+	  </div>
 
       <div class="interactions">
         <p id="favorite" class="favorite">🤍 Add to Favorites</p>
@@ -59,82 +92,72 @@
         </div>
       </div>
 
-      <div class="info-section">
-        <div class="description">
-          <h3>Description:</h3>
-          <p>
-            Red Dead Redemption is a 2010 action-adventure game developed by
-            Rockstar San Diego and published by Rockstar Games. A successor to
-            2004’s Red Dead Revolver, it is the second game in the Red Dead
-            series. Red Dead Redemption is set during the decline of the
-            American frontier in the year 1911.
-          </p>
-          <button class="mature">Rated Mature 18+</button>
-        </div>
-
-        <div class="meta">
-          <p><strong>Developer:</strong> Rockstar Games</p>
-          <p><strong>Release Date:</strong> May 18, 2010</p>
-          <p><strong>Genre:</strong> Third person shooter</p>
-          <p><strong>Platform:</strong> Playstation, Windows</p>
-        </div>
-      </div>
-
-      <div class="reviews-header">
-        <h3>Reviews</h3>
-        <select>
-          <option>Recent</option>
-          <option>Oldest</option>
-          <option>Most Likes</option>
-          <option>Most Dislikes</option>
-        </select>
-      </div>
-
-      <div class="add-review">
-        <div class="avatar"></div>
-        <textarea placeholder="Add a review..." id="review-input"></textarea>
-        <button id="post-review-btn">Post</button>
-      </div>
-
-      <div class="review-entry">
-        <div class="avatar"></div>
-        <div class="review-text">
-          <p class="username">UserName</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-        <div class="review-reactions">
-          <button class="reaction like"
-            onclick="handleReaction(this, 'like', 0)">
-            👍 <span class="count" id="like-count-0">12000</span>
-          </button>
-          <button class="reaction dislike"
-            onclick="handleReaction(this, 'dislike', 0)">
-            👎 <span class="count" id="dislike-count-0">1500</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="review-entry">
-        <div class="avatar"></div>
-        <div class="review-text">
-          <p class="username">UserName</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-        <div class="review-reactions">
-          <button class="reaction like"
-            onclick="handleReaction(this, 'like', 1)">
-            👍 <span class="count" id="like-count-1">10200</span>
-          </button>
-          <button class="reaction dislike"
-            onclick="handleReaction(this, 'dislike', 1)">
-            👎 <span class="count" id="dislike-count-1">700</span>
-          </button>
-        </div>
-      </div>
-
-    </div>
-    <jsp:include page="Footer.jsp" />
+	  <div class="info-section">
+		    <div class="description">
+		      <h3>Description:</h3>
+		      <p><%= game.getDescription() %></p>
+		      <button class="mature">Rated <%= game.getAgeRestriction() %></button>
+		    </div>
+		
+		    <div class="meta">
+		      <p><strong>Developer:</strong> <%= game.getDeveloper() %></p>
+		      <p><strong>Release Date:</strong> <%= game.getReleaseDate() %></p>
+		      <p><strong>Genres:</strong>
+		        <%= String.join(", ", game.getGenres()) %>
+		      </p>
+		      <p><strong>Platforms:</strong>
+		        <%= String.join(", ", game.getPlatforms()) %>
+		      </p>
+		    </div>
+		  </div>
+		
+		  <div class="reviews-header">
+		    <h3>Reviews</h3>
+		    <select>
+		      <option>Recent</option>
+		      <option>Oldest</option>
+		      <option>Most Likes</option>
+		      <option>Most Dislikes</option>
+		    </select>
+		  </div>
+		
+		  <div class="add-review">
+		    <div class="avatar"></div>
+		    <textarea placeholder="Add a review..." id="review-input"></textarea>
+		    <button id="post-review-btn">Post</button>
+		  </div>
+		
+		  <% if (reviews != null && !reviews.isEmpty()) {
+		       int index = 0;
+		       for (Review review : reviews) { %>
+		    <div class="review-entry">
+		      <div class="avatar"></div>
+		      <div class="review-text">
+		        <p class="username"><%= review.getUsername() %></p>
+		        <p><%= review.getReviewText() %></p>
+		      </div>
+		      <div class="review-reactions">
+		        <button class="reaction like" onclick="handleReaction(this, 'like', <%= index %>)">
+		          👍 <span class="count" id="like-count-<%= index %>"><%= review.getLikes() %></span>
+		        </button>
+		        <button class="reaction dislike" onclick="handleReaction(this, 'dislike', <%= index %>)">
+		          👎 <span class="count" id="dislike-count-<%= index %>"><%= review.getDislikes() %></span>
+		        </button>
+		      </div>
+		    </div>
+		  <% index++; } } else { %>
+		    <p>No reviews yet. Be the first to leave one!</p>
+		  <% } %>
+	</div>
+	
+	<jsp:include page="Footer.jsp" />
     <script>
+    
+    function changeBannerImage(thumbnail) {
+        const banner = document.getElementById('main-banner');
+        banner.src = thumbnail.src;
+      }
+    
     // Handles toggling the 'Add to Favorites' button
     const favorite = document.getElementById('favorite');
     let isFavorite = false;

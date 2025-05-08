@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -22,95 +24,63 @@
                 <div class="left-column">
                     <div class="left-top">
                         <div class="user-info">
-                        
-                            <img width=150 height=150 src="${pageContext.request.contextPath}/assests/usersImages/${user.profilePictureFileName}" alt="Profile Picture" class="profile-pic" />
-                            
+                            <img width="150" height="150" src="${pageContext.request.contextPath}/assests/usersImages/${user.profilePictureFileName}" alt="Profile Picture" class="profile-pic" />
                             <div>
                                 <p>Username: ${user.username}</p>
-        						<p>Email: ${user.email}</p>
-        						<p>Member Since: ${user.joinDate}</p>
-        						<p>Member Since: ${user.profilePictureFileName}</p>
+                                <p>Email: ${user.email}</p>
+                                <p>Member Since: ${user.joinDate}</p>
                             </div>
                         </div>
                     </div>
+
                     <div class="left-bottom">
-                        <p style="cursor: pointer;"><a href>My favourites  <i
-                                    class="fa fa-caret-right"
-                                    aria-hidden="true"></i> </a> </p>
+                        <p style="cursor: pointer;"><a class="my-favourites" href="<c:url value='/Favourites' />">Favourites <i class="fa fa-caret-right" aria-hidden="true"></i></a></p>
+
+                        <!-- Display Top 3 Favourites -->
                         <div class="game-list">
-                            <div class="game-item">
-                                <img src="${pageContext.request.contextPath}/assests/discoelysum.jpeg"
-                                    alt="Game 1">
-                            </div>
-                            <div class="game-item">
-                                <img src="${pageContext.request.contextPath}/assests/elden ring.png"
-                                    alt="Game 2">
-                            </div>
-                            <div class="game-item">
-                                <img src="${pageContext.request.contextPath}/assests/slaythespire.jpeg"
-                                    alt="Game 3">
-                            </div>
+                            <c:forEach var="game" items="${top3Favourites}">
+                                <div class="game-item" onclick="window.location.href='${pageContext.request.contextPath}/Game?id=${game.gameId}'">
+                                    <img src="${pageContext.request.contextPath}/assets/gamesImages/${fn:replace(game.title, ' ', '_')}/${fn:replace(game.title, ' ', '_')}_image1.jpg" alt="${game.title}">
+                                </div>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>
+
                 <div class="right-column">
                     <div class="right-top">
                         <h3>Change Password</h3>
-                        <form action="#">
-                            <input type="password"
-                                placeholder="Current Password"
-                                name="CurrentPassword" id="CurrentPassword">
-                            <input type="password" placeholder="New Password"
-                                name="NewPassword" id="NewPassword">
-                            <input type="password"
-                                placeholder="Confirm Password"
-                                name="ConfirmPassword" id="ConfirmPassword">
-                            <button type="submit">Change Password</button>
-                        </form>
+						<c:if test="${not empty error}">
+						    <p style="color: red;">${error}</p>
+						</c:if>
+						<c:if test="${not empty success}">
+						    <p style="color: green;">${success}</p>
+						</c:if>
+						<form action="${pageContext.request.contextPath}/User-Dashboard" method="post">
+						    <input type="password" placeholder="Current Password" name="CurrentPassword" id="CurrentPassword" required>
+						    <input type="password" placeholder="New Password" name="NewPassword" id="NewPassword" required>
+						    <input type="password" placeholder="Confirm Password" name="ConfirmPassword" id="ConfirmPassword" required>
+						    <button type="submit">Change Password</button>
+						</form>
                     </div>
+
                     <div class="right-bottom">
-                        <h3> <a href="#"><span>User Reviews</span> <i class="fa fa-caret-right"
-                                aria-hidden="true"></i> </a></h3>
+                        <h3> <a class="my-favourites" href="<c:url value='/My-Reviews' />">My reviews <i class="fa fa-caret-right" aria-hidden="true"></i></a></h3>
+                        
+                        <!-- Display Top 3 Reviews -->
                         <div class="user-reviews">
-                            <div class="review-item">
-                                <div class="profile">
-                                    <i class="fa fa-user"
-                                        aria-hidden="true"></i>
+                            <c:forEach var="review" items="${top3Reviews}">
+                                <div class="review-item">
+                                    <div class="profile">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="review-content">
+                                        <p class="reviewer-name"> <a href="<c:url value='/User-Dashboard' />">${review.username}</a> <span class="review-date">${review.reviewDate}</span> </p>
+                                        <p class="review-text">${review.reviewText}</p>
+                                        <p class="game-name"><a href="<c:url value='/Game?id=${review.gameId}' />">${review.gameTitle}</a></p>
+                                    </div>
                                 </div>
-                                <div class="review-content">
-                                    <p class="reviewer-name"> <a href="">John Doe</a> <span class="review-date">2023-10-01</span> </p>
-                                    <p class="review-text">This game is
-                                        amazing! I love the graphics and
-                                        gameplay.</p>
-                                    <p class="game-name"><a href="">Elden Ring</a></p>
-                                </div>
-                            </div>
-                            <div class="review-item">
-                                <div class="profile">
-                                    <i class="fa fa-user"
-                                        aria-hidden="true"></i>
-                                </div>
-                                <div class="review-content">
-                                    <p class="reviewer-name"> <a href="">John Doe</a> <span class="review-date">2023-10-01</span> </p>
-                                    <p class="review-text">This game is
-                                        amazing! I love the graphics and
-                                        gameplay.</p>
-                                    <p class="game-name"><a href="">Elden Ring</a></p>
-                                </div>
-                            </div>
-                            <div class="review-item">
-                                <div class="profile">
-                                    <i class="fa fa-user"
-                                        aria-hidden="true"></i>
-                                </div>
-                                <div class="review-content">
-                                    <p class="reviewer-name"> <a href="">John Doe</a> <span class="review-date">2023-10-01</span> </p>
-                                    <p class="review-text">This game is
-                                        amazing! I love the graphics and
-                                        gameplay.</p>
-                                    <p class="game-name"><a href="">Elden Ring</a></p>
-                                </div>
-                            </div>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>
@@ -119,5 +89,4 @@
 
         <jsp:include page="Footer.jsp" />
     </body>
-
 </html>

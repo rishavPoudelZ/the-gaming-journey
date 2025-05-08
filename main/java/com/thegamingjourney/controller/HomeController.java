@@ -19,12 +19,12 @@ public class HomeController extends HttpServlet {
             throws ServletException, IOException {
 
         List<Game> games = null;
-		try {
-			games = homeService.getAllGames();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        try {
+            // Get the top 10 games based on rating
+            games = homeService.getTopGames();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         request.setAttribute("gamesList", games);
         request.getRequestDispatcher("/WEB-INF/pages/home.jsp").forward(request, response);
     }

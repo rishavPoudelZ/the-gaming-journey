@@ -27,35 +27,34 @@
                 <i class="fa fa-caret-right" aria-hidden="true"></i>
             </div>
         </main>
+        <h2 style="margin-left: 50px">Top 10 Games</h2>
+        <section style="padding: 0px 50px 50px 50px;  ">
+            <div class="games-container">
+                <c:set var="counter" value="0" />
+                <c:forEach var="game" items="${gamesList}" varStatus="status">
+                    <c:if test="${status.index % 5 == 0}">
+                        <c:if test="${status.index != 0}">
+                            </div> <!-- close previous games-row -->
+                        </c:if>
+                        <div class="games-row">
+                    </c:if>
 
-        <section style="padding: 30px;">
-            <div class="games-container">            
-            	<c:set var="counter" value="0" />
-				<c:forEach var="game" items="${gamesList}" varStatus="status">
-				    <c:if test="${status.index % 5 == 0}">
-				        <c:if test="${status.index != 0}">
-				            </div> <!-- close previous games-row -->
-				        </c:if>
-				        <div class="games-row">
-				            <h2>Top Games <i class="fa fa-caret-right" aria-hidden="true"></i></h2>
-				    </c:if>
-				
-				    <div class="game-card">
-				        <img 
-				            src="${pageContext.request.contextPath}/assets/gamesImages/${fn:replace(game.title, ' ', '_')}/${fn:replace(game.title, ' ', '_')}_image1.jpg" 
-				            alt="${game.title}" 
-				            loading="lazy"
-				        />
-				    </div>
-				
-				    <c:if test="${status.last}">
-				        </div> <!-- close last games-row -->
-				    </c:if>
-				</c:forEach>
-            
+                    <!-- Wrap each game card with an anchor tag that points to the game page with the gameId -->
+                    <a href="${pageContext.request.contextPath}/Game?id=${game.gameId}" class="game-card">
+                        <img 
+                            src="${pageContext.request.contextPath}/assets/gamesImages/${fn:replace(game.title, ' ', '_')}/${fn:replace(game.title, ' ', '_')}_image1.jpg" 
+                            alt="${game.title}" 
+                            loading="lazy"
+                        />
+                    </a>
+
+                    <c:if test="${status.last}">
+                        </div> <!-- close last games-row -->
+                    </c:if>
+                </c:forEach>
             </div>
         </section>
-	
+
         <jsp:include page="Footer.jsp" />
     </body>
 </html>

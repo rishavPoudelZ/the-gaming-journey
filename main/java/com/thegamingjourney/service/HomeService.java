@@ -9,12 +9,15 @@ import com.thegamingjourney.config.DbConfig;
 
 public class HomeService {
 
-    public List<Game> getAllGames() throws ClassNotFoundException {
+    public List<Game> getTopGames() throws ClassNotFoundException {
         List<Game> games = new ArrayList<>();
+
+        // Modify the query to sort by average rating and limit to the top 10 games
+        String query = "SELECT * FROM games ORDER BY avgRating DESC LIMIT 10";  // Sorting by highest rating and limiting to 10 rows
 
         try (Connection conn = DbConfig.getDbConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM games")) {
+             ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
                 Game game = new Game();

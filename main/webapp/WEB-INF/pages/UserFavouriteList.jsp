@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -29,175 +30,58 @@
                         <div class="image-header">Image</div>
                         <div class="title-header">Game Title</div>
                         <div class="rating-header">Rating</div>
-                        <div class="tags-header">tags</div>
                         <div class="actions-header">Actions</div>
                     </div>
                     <div class="table-body">
-                        <div class="table-row">
-                            <div class="cell-number">1</div>
-                            <div class="cell-image"><img src="../picture/P1.jpg"
-                                    alt="Assassin's Creed Shadows"></div>
-                            <div class="cell-title">Assassin's Creed
-                                Shadows<br><sub>Ubisoft Quebec Mar 20,
-                                    2025</sub></div>
-                            <div class="cell-rating">★★★★☆</div>
-                            <div class="cell-tags">Action-adventure,
-                                Role-playing, Stealth</div>
-                            <div class="cell-actions">
-                                <button class="delete-button">Remove</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="cell-number">2</div>
-                            <div class="cell-image"><img src="../picture/P2.jpg"
-                                    alt="Atomfall"></div>
-                            <div class="cell-title">Atomfall<br><sub>Rebellion
-                                    Mar 27, 2025</sub></div>
-                            <div class="cell-rating">★★★☆☆</div>
-                            <div class="cell-tags">Action</div>
-                            <div class="cell-actions">
-                                <button class="delete-button">Remove</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="cell-number">3</div>
-                            <div class="cell-image"><img src="../picture/p3.jpg"
-                                    alt="Split Fiction"></div>
-                            <div class="cell-title">Split
-                                Fiction<br><sub>Hazelight Studios Mar 6,
-                                    2025</sub></div>
-                            <div class="cell-rating">★★★☆☆</div>
-                            <div class="cell-tags">Action-adventure</div>
-                            <div class="cell-actions">
-                                <button class="delete-button">Remove</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="cell-number">4</div>
-                            <div class="cell-image"><img src="../picture/p4.jpg"
-                                    alt="Hogwarts Legacy"></div>
-                            <div class="cell-title">Hogwarts
-                                Legacy<br><sub>Avalanche Feb 10,
-                                    2023</sub></div>
-                            <div class="cell-rating">★★★★☆</div>
-                            <div class="cell-tags">Open-world,
-                                Action-adventure</div>
-                            <div class="cell-actions">
-                                <button class="delete-button">Remove</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="cell-number">5</div>
-                            <div class="cell-image"><img src="../picture/p5.jpg"
-                                    alt="Red Dead Redemption 2"></div>
-                            <div class="cell-title">Red Dead Redemption
-                                2<br><sub>Rockstar Studios Oct 26,
-                                    2018</sub></div>
-                            <div class="cell-rating">★★★★★</div>
-                            <div class="cell-tags">Open-world, Action
-                                Role-playing</div>
-                            <div class="cell-actions">
-                                <button class="delete-button">Remove</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="cell-number">6</div>
-                            <div class="cell-image"><img src="../picture/p6.jpg"
-                                    alt="Super Mario World"></div>
-                            <div class="cell-title">Super Mario
-                                World<br><sub>Rebellion Nov 21, 1990</sub></div>
-                            <div class="cell-rating">★★★★★</div>
-                            <div class="cell-tags">2D Side-scrolling
-                                Platformer</div>
-                            <div class="cell-actions">
-                                <button class="delete-button">Remove</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="cell-number">7</div>
-                            <div class="cell-image"><img src="../picture/p7.jpg"
-                                    alt="Genshin Impact"></div>
-                            <div class="cell-title">Genshin
-                                Impact<br><sub>HoYoverse Sep 27,
-                                    2020</sub></div>
-                            <div class="cell-rating">★★★★★</div>
-                            <div class="cell-tags">Free-to-play, Open-world
-                                Action Role-playing</div>
-                            <div class="cell-actions">
-                                <button class="delete-button">Remove</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="cell-number">8</div>
-                            <div class="cell-image"><img src="../picture/p8.jpg"
-                                    alt="The Last of Us"></div>
-                            <div class="cell-title">The Last of
-                                Us<br><sub>Naughty Dog Jun 14, 2013</sub></div>
-                            <div class="cell-rating">★★★★☆</div>
-                            <div class="cell-tags">Third-person
-                                Action-adventure</div>
-                            <div class="cell-actions">
-                                <button class="delete-button">Remove</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="cell-number">9</div>
-                            <div class="cell-image"><img src="../picture/p9.jpg"
-                                    alt="The Elder Scrolls V: Skyrim"></div>
-                            <div class="cell-title">The Elder Scrolls V:
-                                Skyrim<br><sub>Bethesda Game Studios Nov 10,
-                                    2011</sub></div>
-                            <div class="cell-rating">★★★★☆</div>
-                            <div class="cell-tags">Single-player action
-                                role-playing game (ARPG)</div>
-                            <div class="cell-actions">
-                                <button class="delete-button">Remove</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="cell-number">10</div>
-                            <div class="cell-image"><img
-                                    src="../picture/p10.jpg"
-                                    alt="Ghost of Tsushima"></div>
-                            <div class="cell-title">Ghost of
-                                Tsushima<br><sub>Sucker Punch Jul 16,
-                                    2020</sub></div>
-                            <div class="cell-rating">★★★★☆</div>
-                            <div class="cell-tags">Action-adventure</div>
-                            <div class="cell-actions">
-                                <button class="delete-button">Remove</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="cell-number">11</div>
-                            <div class="cell-image"><img
-                                    src="../picture/p11.jpg"
-                                    alt="Journey"></div>
-                            <div class="cell-title">Journey<br><sub>That game
-                                    company (TGC) Mar 13, 2012</sub></div>
-                            <div class="cell-rating">★★★★★</div>
-                            <div class="cell-tags">Indie adventure</div>
-                            <div class="cell-actions">
-                                <button class="delete-button">Remove</button>
-                            </div>
-                        </div>
-                        <div class="table-row">
-                            <div class="cell-number">12</div>
-                            <div class="cell-image"><img
-                                    src="../picture/p12.jpg"
-                                    alt="God of War: Ragnarok"></div>
-                            <div class="cell-title">God of War:
-                                Ragnarok<br><sub>Santa Monica STudio Nov 9,
-                                    2022</sub></div>
-                            <div class="cell-rating">★★★★★</div>
-                            <div class="cell-tags">Third-person action-adventure
-                                gam</div>
-                            <div class="cell-actions">
-                                <button class="delete-button">Remove</button>
-                            </div>
-                        </div>
+					    <c:if test="${not empty errorMessage}">
+						    <div id="error-message" style="color: red; text-align: center; font-size: 1.2em; margin: 20px;">
+						        ${errorMessage}
+						    </div>
+						    <script>
+						        // Auto-hide the error message after 5 seconds
+						        setTimeout(function() {
+						            var errorMsg = document.getElementById("error-message");
+						            if (errorMsg) {
+						                errorMsg.style.display = 'none';
+						            }
+						        }, 5000);
+						    </script>
+						</c:if>
 
-                    </div>
+					
+					    <c:choose>
+					        <c:when test="${empty favouriteGames}">
+					            <div style="text-align: center; font-size: 2em; padding: 40px;">
+					                No favourite games found.
+					            </div>
+					        </c:when>
+					        <c:otherwise>
+					            <c:forEach var="game" items="${favouriteGames}" varStatus="status">
+					                <div class="table-row">
+					                    <div class="cell-number">${status.index + 1}</div>
+					                    <div class="cell-image">
+					                        <img src="${pageContext.request.contextPath}/assets/gamesImages/${fn:replace(game.title, ' ', '_')}/${fn:replace(game.title, ' ', '_')}_image1.jpg" alt="${game.title}">
+					                    </div>
+					                    <div class="cell-title">
+					                        ${game.title}<br>
+					                        <sub>${game.developer} ${game.releaseDate}</sub>
+					                    </div>
+					                    <div class="cell-rating">
+					                        <span>${game.avgRating}</span>
+					                    </div>
+					                    <div class="cell-actions">
+					                        <form method="post" action="${pageContext.request.contextPath}/Favourites/remove">
+					                            <input type="hidden" name="gameId" value="${game.gameId}" />
+					                            <button type="submit" class="delete-button">Remove</button>
+					                        </form>
+					                    </div>
+					                </div>
+					            </c:forEach>
+					        </c:otherwise>
+					    </c:choose>
+					</div>
+
+                    
                 </div>
             </div>
         </div>

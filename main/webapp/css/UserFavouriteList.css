@@ -172,3 +172,60 @@ body {
     font-size: 0.7rem;
 }
 
+
+.table-header,
+.table-row {
+    display: flex;
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid #4a5568;
+}
+
+.table-header {
+    font-weight: 600;
+    border-bottom: 2px solid #4a5568;
+}
+
+.table-header > div,
+.table-row > div {
+    text-align: center;
+    flex: 1;
+}
+
+.number-header, .cell-number {
+    flex: 0 0 5%;
+}
+
+.image-header, .cell-image {
+    flex: 0 0 10%;
+}
+
+.title-header, .cell-title {
+    flex: 1.5;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.rating-header, .cell-rating {
+    flex: 1;
+}
+
+.type-header, .cell-type {
+    flex: 1;
+}
+
+.tags-header, .cell-tags {
+    flex: 1;
+}
+
+.actions-header, .cell-actions {
+    flex: 0.5;
+}
+
+.table-row img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
