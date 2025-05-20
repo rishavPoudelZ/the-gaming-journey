@@ -69,7 +69,18 @@
     transform: rotate(45deg);
 }</style>
 <body>
-<jsp:include page="Header.jsp" />
+<div style="width: 100%; display:flex; gap: 0px;"> 
+	<aside class="sidebar">
+	 <div class="profile-section" >
+	     <i class="fa fa-user"></i>
+	     <p>Admin</p>
+	     <p>Email@gmail.com</p>
+	 </div>
+	  <a href="Admin-Dashboard" style="text-decoration: none;" class="sidebar-btn">Dashboard</a>
+	  <a href="Add-Games" style="text-decoration: none;"class="sidebar-btn">Add Games</a>
+	 <a href="Logout" style="text-decoration: none;" class="sidebar-btn">Logout</a>
+	    
+	</aside>
 <main class="main-content">
 
     <!-- Main Image Preview -->
@@ -153,6 +164,7 @@
         <button type="submit">Add Game</button>
     </form>
 </main>
+</div>
 
 <script>
     const imageInput = document.getElementById('gameImages');
@@ -193,6 +205,6 @@
     // Debug log for public assets path
     console.log("<%= request.getContextPath() %>/assets/usersImages/");
 </script>
-<jsp:include page="Footer.jsp" />
+
 </body>
 </html>

@@ -55,4 +55,42 @@ public class GamePageController extends HttpServlet {
 
         request.getRequestDispatcher("/WEB-INF/pages/GamePage.jsp").forward(request, response);
     }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.setCharacterEncoding("UTF-8"); // Support Unicode reviews
+
+        String action = request.getParameter("action");
+
+        if ("addReview".equals(action)) {
+            try {
+                Integer userId = (Integer) request.getSession().getAttribute("userId");
+                if (userId == null) {
+                    response.sendRedirect("/login"); // or send 401
+                    return;
+                }
+
+                int gameId = Integer.parseInt(request.getParameter("gameId"));
+                String reviewText = request.getParameter("reviewText");
+
+                if (reviewText != null && !reviewText.trim().isEmpty()) {
+                    service.addReview(userId, gameId, reviewText.trim());
+                    response.sendRedirect("Game?id=" + gameId); // redirect back to game page
+                } else {
+                    request.setAttribute("error", "Review cannot be empty.");
+                    doGet(request, response); // show page again with error
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to post review");
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
+        }
+    }
+
+    
+    
 }

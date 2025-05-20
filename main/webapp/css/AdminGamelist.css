@@ -185,34 +185,14 @@ body {
     font-size: 0.7rem;
 }
 
+.cell-title > a{
+	text-decoration: none;
+	color: white;
+	transition: color 0.5s;
+}
 
-/* @media (max-width: 768px) {
-    .favorite-list-table {
-        font-size: 12px;
-    }
-
-    .table-header div,
-    .table-row div {
-        padding: 8px;
-    }
-
-    .favorite-list-title {
-        font-size: 20px;
-    }
-
-    .table-header .image-header{
-        display: none;
-    }
-
-    .cell-image{
-        display: none;
-    }
-} */
-
-
-/* .number-header, .image-header, .title-header, .rating-header, .tags-header, .actions-header, .cell-number, .cell-image, .cell-title, .cell-rating, .cell-tags, .cell-actions{
-    display: flex;
-    justify-content: center;
-    border: 1px solid white;
-} */
+.cell-title > a:hover{
+	color: rgb(81, 81, 206);
+	
+}
 

@@ -1,5 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.thegamingjourney.util.CookieUtil" %>
+<%@ page import="jakarta.servlet.http.Cookie" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<%
+    String loggedInUser = CookieUtil.getCookieValue(request, "tgj_username");
+%>
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,111 +24,76 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/HeaderFooter.css">
     </head>
     <body>
-        <jsp:include page="Header.jsp" />
 
-        <main>
-            <div class="main-container">
-                <div class="left-column">
-                    <div class="left-top">
-                        <div class="admin-info">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                            <div>
-                                <p>Admin</p>
-                                <p>exmaple@gmail.com</p>
-                            </div>
-                        </div>
-                        <div class="total-users">
-                            Total Users <br>
-                            <span class="total-users">100</span>
-                        </div>
-                    </div>
-                    <div class="left-bottom">
-                        <p style="cursor: pointer;"><a href>All Games <i
-                                    class="fa fa-caret-right"
-                                    aria-hidden="true"></i> </a> </p>
-                        <div class="game-list">
-                            <div class="game-item">
-                                <img src="${pageContext.request.contextPath}/assests/discoelysum.jpeg"
-                                    alt="Game 1">
-                            </div>
-                            <div class="game-item">
-                                <img src="${pageContext.request.contextPath}/assests/elden ring.png"
-                                    alt="Game 2">
-                            </div>
-                            <div class="game-item">
-                                <img src="${pageContext.request.contextPath}/assests/slaythespire.jpeg"
-                                    alt="Game 3">
-                            </div>
-                        </div>
-                        <a href="Add-Games" style="text-decoration: none;" class="add-game">
-                            <button> Add Game</button>
-                        </a>
-                    </div>
+        <div class="container">
+            <aside class="sidebar">
+                <div class="profile-section">
+                    <i class="fa fa-user"></i>
+                    <p>Admin</p>
+                    <p>Email@gmail.com</p>
                 </div>
-                <div class="right-column">
-                    <div class="right-top">
+                 <a href="Admin-Dashboard" style="text-decoration: none;" class="sidebar-btn">Dashboard</a>
+                 <a href="Add-Games" style="text-decoration: none;"class="sidebar-btn">Add Games</a>
+                <a href="Logout" style="text-decoration: none;" class="sidebar-btn">Logout</a>
+                
+            </aside>
+
+            <main class="main-content">
+                <section class="games-section">
+                    <a href="Admin-Game-List" style="decoration: none;" >All Games <i class="fa fa-caret-right"></i></a>
+                     <div class="game-list" style="margin-top: 10px;">
+					    <c:forEach var="game" items="${latestGames}">
+					        <div class="game-item">
+					            <img src="${pageContext.request.contextPath}/assets/gamesImages/${fn:replace(game.title, ' ', '_')}/${fn:replace(game.title, ' ', '_')}_image1.jpg" alt="${game.title}" alt="${game.title}">
+					        </div>
+					    </c:forEach>
+					</div>
+                </section>
+
+                <div class="middle-section" >
+                    <section class="reviews-section">
+                        <a href="Admin-User-Reviews" style=" margin-left: 5px;">All Reviews <i class="fa fa-caret-right"></i></a>
+                        
+					    <c:forEach var="review" items="${latestReviews}">
+					        <div class="review">
+					            
+					            <div>
+					                <p><strong>${review.username}</strong></p>
+					                <p>${review.reviewText}</p>
+					            </div>
+					        </div>
+					    </c:forEach>
+						
+
+                    </section>
+
+                    <section class="password-section">
                         <h3>Change Password</h3>
-                        <form action="#">
-                            <input type="password"
-                                placeholder="Current Password"
-                                name="CurrentPassword" id="CurrentPassword">
-                            <input type="password" placeholder="New Password"
-                                name="NewPassword" id="NewPassword">
-                            <input type="password"
-                                placeholder="Confirm Password"
-                                name="ConfirmPassword" id="ConfirmPassword">
-                            <button type="submit">Change Password</button>
-                        </form>
-                    </div>
-                    <div class="right-bottom">
-                        <h3> <a href="#"><span>User Reviews</span> <i class="fa fa-caret-right"
-                                aria-hidden="true"></i> </a></h3>
-                        <div class="user-reviews">
-                            <div class="review-item">
-                                <div class="profile">
-                                    <i class="fa fa-user"
-                                        aria-hidden="true"></i>
-                                </div>
-                                <div class="review-content">
-                                    <p class="reviewer-name"> <a href="">John Doe</a> <span class="review-date">2023-10-01</span> </p>
-                                    <p class="review-text">This game is
-                                        amazing! I love the graphics and
-                                        gameplay.</p>
-                                    <p class="game-name"><a href="">Elden Ring</a></p>
-                                </div>
-                            </div>
-                            <div class="review-item">
-                                <div class="profile">
-                                    <i class="fa fa-user"
-                                        aria-hidden="true"></i>
-                                </div>
-                                <div class="review-content">
-                                    <p class="reviewer-name"> <a href="">John Doe</a> <span class="review-date">2023-10-01</span> </p>
-                                    <p class="review-text">This game is
-                                        amazing! I love the graphics and
-                                        gameplay.</p>
-                                    <p class="game-name"><a href="">Elden Ring</a></p>
-                                </div>
-                            </div>
-                            <div class="review-item">
-                                <div class="profile">
-                                    <i class="fa fa-user"
-                                        aria-hidden="true"></i>
-                                </div>
-                                <div class="review-content">
-                                    <p class="reviewer-name"> <a href="">John Doe</a> <span class="review-date">2023-10-01</span> </p>
-                                    <p class="review-text">This game is
-                                        amazing! I love the graphics and
-                                        gameplay.</p>
-                                    <p class="game-name"><a href="">Elden Ring</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+						<c:if test="${not empty error}">
+						    <div id="errorMessage" style="color: red;">${error}</div>
+						</c:if>
+						<c:if test="${not empty success}">
+						    <div id="successMessage" style="color: green;">${success}</div>
+						</c:if>
+						<form action="${pageContext.request.contextPath}/Admin-Dashboard" method="post">
+						    <input type="password" placeholder="Current Password" name="CurrentPassword" id="CurrentPassword" required>
+						    <input type="password" placeholder="New Password" name="NewPassword" id="NewPassword" required>
+						    <input type="password" placeholder="Confirm Password" name="ConfirmPassword" id="ConfirmPassword" required>
+						    <button type="submit">Change Password</button>
+						</form>
+                    </section>
                 </div>
-            </div>
-        </main>
+            </main>
+        </div>
+      
+		<script>
+		    setTimeout(function () {
+		        const errorMsg = document.getElementById('errorMessage');
+		        const successMsg = document.getElementById('successMessage');
+		        if (errorMsg) errorMsg.style.display = 'none';
+		        if (successMsg) successMsg.style.display = 'none';
+		    }, 2000);
+		</script>
 
-        <jsp:include page="Footer.jsp" />
     </body>
 </html>

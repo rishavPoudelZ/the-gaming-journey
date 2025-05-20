@@ -63,7 +63,8 @@
 					                        <img src="${pageContext.request.contextPath}/assets/gamesImages/${fn:replace(game.title, ' ', '_')}/${fn:replace(game.title, ' ', '_')}_image1.jpg" alt="${game.title}">
 					                    </div>
 					                    <div class="cell-title">
-					                        ${game.title}<br>
+					                    	<a href="${pageContext.request.contextPath}/Game?id=${game.gameId}">${game.title}</a>
+					                        <br>
 					                        <sub>${game.developer} ${game.releaseDate}</sub>
 					                    </div>
 					                    <div class="cell-rating">

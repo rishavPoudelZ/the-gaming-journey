@@ -2,6 +2,7 @@
 <%@ page import="com.thegamingjourney.model.Game" %>
 <%@ page import="com.thegamingjourney.model.Review" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.thegamingjourney.service.GamePageService" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%@ page import="java.io.File" %>
@@ -18,9 +19,20 @@
 <%
     String gameTitleUnderscored = game.getTitle().replace(" ", "_");
     String imageFolderPath = application.getRealPath("/assets/gamesImages/" + gameTitleUnderscored);
-    File imageDir = new File(imageFolderPath);
-    String[] imageFiles = imageDir.list((dir, name) -> name.matches(gameTitleUnderscored + "_image\\d+\\.jpg"));
-    Arrays.sort(imageFiles); // Ensure image1, image2... order
+    File folder = new File(imageFolderPath);
+    File[] imageFilesArray = folder.listFiles((dir, name) -> name.matches(gameTitleUnderscored + "_image\\d+\\.jpg"));
+
+    // Sort by image number (image1.jpg, image2.jpg, etc.)
+    java.util.Arrays.sort(imageFilesArray, (f1, f2) -> {
+        String n1 = f1.getName().replaceAll("\\D", "");
+        String n2 = f2.getName().replaceAll("\\D", "");
+        return Integer.compare(Integer.parseInt(n1), Integer.parseInt(n2));
+    });
+%>
+
+<%
+    int userId = (int) session.getAttribute("userId");
+    boolean isFavorite = new GamePageService().isFavorite(userId, game.getGameId());
 %>
 
 <!DOCTYPE html>
@@ -42,27 +54,17 @@
 
       <!-- Banner (Always first image) -->
 		<div class="banner">
-		  <img id="main-banner" 
-		       src="${pageContext.request.contextPath}/assets/gamesImages/<%= gameTitleUnderscored %>/<%= imageFiles != null && imageFiles.length > 0 ? imageFiles[0] : "default.jpg" %>" 
-		       alt="${game.title}">
+		  <img id="main-image" src="${pageContext.request.contextPath}/assets/gamesImages/<%= gameTitleUnderscored %>/<%= imageFilesArray[0].getName() %>" alt="Game Banner">
 		  <div class="banner-arrows">
-		    <i class="fa fa-angle-left" aria-hidden="true"></i>
-		    <i class="fa fa-angle-right" aria-hidden="true"></i>
+		    <i class="fa fa-angle-left" onclick="changeImage(-1)"></i>
+		    <i class="fa fa-angle-right" onclick="changeImage(1)"></i>
 		  </div>
 		</div>
 		
-		<!-- Gallery Thumbnails -->
 		<div class="gallery-container">
 		  <div class="gallery">
-		    <% if (imageFiles != null) {
-		         for (String fileName : imageFiles) {
-		    %>
-		      <img src="${pageContext.request.contextPath}/assets/gamesImages/<%= gameTitleUnderscored %>/<%= fileName %>" 
-		           alt="<%= fileName %>" 
-		           onclick="changeBannerImage(this)">
-		    <%   }
-		       } else { %>
-		      <p>No screenshots available.</p>
+		    <% for (int i = 0; i < imageFilesArray.length; i++) { %>
+		      <img class="thumbnail" src="${pageContext.request.contextPath}/assets/gamesImages/<%= gameTitleUnderscored %>/<%= imageFilesArray[i].getName() %>" onclick="setMainImage(<%= i %>)">
 		    <% } %>
 		  </div>
 		</div>
@@ -76,7 +78,9 @@
 	  </div>
 
       <div class="interactions">
-        <p id="favorite" class="favorite">🤍 Add to Favorites</p>
+        <button id="favorite"  class="Favorite">
+		    <%= isFavorite ? "❤️ Remove from Favorites" : "🤍 Add to Favorites" %>
+		</button>
         <p>Add your Rating</p>
         <div class="star-rating">
           <input type="radio" id="star5-3" name="rating-3" value="5" />
@@ -121,11 +125,14 @@
 		    </select>
 		  </div>
 		
-		  <div class="add-review">
-		    <div class="avatar"></div>
-		    <textarea placeholder="Add a review..." id="review-input"></textarea>
-		    <button id="post-review-btn">Post</button>
-		  </div>
+		  	<form action="Game" method="post" class="add-review">
+			  <div class="avatar"></div>
+			  <textarea name="reviewText" placeholder="Add a review..." required></textarea>
+			  <input type="hidden" name="gameId" value="${game.gameId}" />
+			  <input type="hidden" name="action" value="addReview" />
+			  <button type="submit">Post</button>
+			</form>
+
 		
 		  <% if (reviews != null && !reviews.isEmpty()) {
 		       int index = 0;
@@ -151,22 +158,48 @@
 	</div>
 	
 	<jsp:include page="Footer.jsp" />
+	
     <script>
-    
-    function changeBannerImage(thumbnail) {
-        const banner = document.getElementById('main-banner');
-        banner.src = thumbnail.src;
+
+    const imageFiles = [
+        <% for (int i = 0; i < imageFilesArray.length; i++) { %>
+          "<%= imageFilesArray[i].getName() %>"<%= i < imageFilesArray.length - 1 ? "," : "" %>
+        <% } %>
+      ];
+      const basePath = "<%= request.getContextPath() %>/assets/gamesImages/<%= gameTitleUnderscored %>/";
+      let currentIndex = 0;
+
+      function setMainImage(index) {
+        currentIndex = index;
+        document.getElementById('main-image').src = basePath + imageFiles[index];
+      }
+
+      function changeImage(direction) {
+        currentIndex += direction;
+        if (currentIndex < 0) currentIndex = imageFiles.length - 1;
+        if (currentIndex >= imageFiles.length) currentIndex = 0;
+        setMainImage(currentIndex);
       }
     
     // Handles toggling the 'Add to Favorites' button
     const favorite = document.getElementById('favorite');
-    let isFavorite = false;
+	let isFavorite = favorite.innerHTML.includes("Remove");
+	
+	favorite.addEventListener('click', () => {
+	  fetch('<%= request.getContextPath() %>/Favourite', {
+	    method: 'POST',
+	    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+	    body: 'gameId=<%= game.getGameId() %>'
+	  })
+	  .then(res => res.text())
+	  .then(message => {
+	    isFavorite = !isFavorite;
+	    favorite.innerHTML = isFavorite ? '❤️ Remove from Favorites' : '🤍 Add to Favorites';
+	    console.log(message);
+	  })
+	  .catch(error => console.error(error));
+	});
 
-    favorite.addEventListener('click', () => {
-      isFavorite = !isFavorite;
-      favorite.classList.toggle('active');
-      favorite.innerHTML = isFavorite ? '❤️ Remove from Favorites' : '🤍 Add to Favorites';
-    });
 
     // Implements the star rating functionality
     const stars = document.querySelectorAll('.star-rating label'); // Targeting the labels now
@@ -198,48 +231,6 @@
       });
     }
 
-    // Enables posting user reviews
-    document.getElementById("post-review-btn").addEventListener("click", () => {
-      const reviewText = document.getElementById("review-input").value.trim();
-      if (reviewText) {
-        alert("Review Posted: " + reviewText); // Placeholder for actual submission
-        document.getElementById("review-input").value = ""; // Clear the input field
-      } else {
-        alert("Please write something before posting.");
-      }
-    });
-
-    // Manages the like and dislike reactions on reviews
-    let reactionsState = [null, null]; // Tracks if a review is liked, disliked, or neither
-
-    function handleReaction(button, type, reviewIndex) {
-      const likeBtn = document.querySelector(`#like-count-${reviewIndex}`).parentNode;
-      const dislikeBtn = document.querySelector(`#dislike-count-${reviewIndex}`).parentNode;
-      const likeCount = document.getElementById(`like-count-${reviewIndex}`);
-      const dislikeCount = document.getElementById(`dislike-count-${reviewIndex}`);
-
-      if (reactionsState[reviewIndex] === type) {
-        // Deselect the reaction
-        button.classList.remove('active');
-        reactionsState[reviewIndex] = null;
-        if (type === 'like') likeCount.textContent = +likeCount.textContent - 1;
-        else dislikeCount.textContent = +dislikeCount.textContent - 1;
-      } else {
-        // Select the current reaction and deselect the other if active
-        if (reactionsState[reviewIndex] === 'like') {
-          likeBtn.classList.remove('active');
-          likeCount.textContent = +likeCount.textContent - 1;
-        } else if (reactionsState[reviewIndex] === 'dislike') {
-          dislikeBtn.classList.remove('active');
-          dislikeCount.textContent = +dislikeCount.textContent - 1;
-        }
-
-        button.classList.add('active');
-        if (type === 'like') likeCount.textContent = +likeCount.textContent + 1;
-        else dislikeCount.textContent = +dislikeCount.textContent + 1;
-        reactionsState[reviewIndex] = type;
-      }
-    }
   </script>
   </body>
 </html>

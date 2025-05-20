@@ -12,11 +12,11 @@ import com.thegamingjourney.util.SessionUtil;
 public class AuthenticationFilter implements Filter {
 
     private static final String[] PUBLIC_PAGES = {
-        "Home", "Login", "Register", "About-Us", "Games", "Game"
+        "Login", "Register"
     };
 
     private static final String[] USER_PAGES = {
-        "User-Dashboard", "Favourites", "My-Reviews"
+    		"About-Us", "Home", "User-Dashboard", "Favourites", "My-Reviews", "Games", "Game"
     };
 
     private static final String[] ADMIN_PAGES = {

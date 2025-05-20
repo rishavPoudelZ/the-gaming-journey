@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="css/Login.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/Login.css">
     <script>
         // Auto-hide the error message after 5 seconds
         window.onload = function () {
