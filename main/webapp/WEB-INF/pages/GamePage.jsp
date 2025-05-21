@@ -142,12 +142,7 @@
 		
 		  <div class="reviews-header">
 		    <h3>Reviews</h3>
-		    <select>
-		      <option>Recent</option>
-		      <option>Oldest</option>
-		      <option>Most Likes</option>
-		      <option>Most Dislikes</option>
-		    </select>
+		    
 		  </div>
 		
 		  	<form action="Game" method="post" class="add-review">
@@ -168,14 +163,7 @@
 		        <p class="username"><%= review.getUsername() %></p>
 		        <p><%= review.getReviewText() %></p>
 		      </div>
-		      <div class="review-reactions">
-		        <button class="reaction like" onclick="handleReaction(this, 'like', <%= index %>)">
-		          👍 <span class="count" id="like-count-<%= index %>"><%= review.getLikes() %></span>
-		        </button>
-		        <button class="reaction dislike" onclick="handleReaction(this, 'dislike', <%= index %>)">
-		          👎 <span class="count" id="dislike-count-<%= index %>"><%= review.getDislikes() %></span>
-		        </button>
-		      </div>
+		      
 		    </div>
 		  <% index++; } } else { %>
 		    <p>No reviews yet. Be the first to leave one!</p>
