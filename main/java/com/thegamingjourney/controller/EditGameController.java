@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 @WebServlet("/Edit-Game")
@@ -39,6 +40,41 @@ public class EditGameController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            int gameId = Integer.parseInt(request.getParameter("gameId"));
+            String title = request.getParameter("gameName");
+            String description = request.getParameter("description");
+            String developer = request.getParameter("developer");
+            String releaseDate = request.getParameter("releaseDate");
+            String ageRestriction = request.getParameter("ageRestriction");
+            String gameUrl = request.getParameter("gameUrl");
+            String[] genres = request.getParameterValues("genres");
+            String[] platforms = request.getParameterValues("platforms");
+
+            Game game = new Game();
+            game.setGameId(gameId);
+            game.setTitle(title);
+            game.setDescription(description);
+            game.setDeveloper(developer);
+            game.setReleaseDate(Date.valueOf(releaseDate));
+            game.setAgeRestriction(ageRestriction);
+            game.setGameUrl(gameUrl);
+
+            service.updateGame(game, genres, platforms);
+
+            response.sendRedirect("Admin-Dashboard"); // Redirect to dashboard or wherever needed
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Failed to update game. Please try again.");
+            doGet(request, response); // Redisplay form with error
         }
     }
     

@@ -20,7 +20,7 @@ public class AuthenticationFilter implements Filter {
     };
 
     private static final String[] ADMIN_PAGES = {
-        "Admin-Dashboard", "Admin-Game-List", "Admin-User-Reviews", "Add-Games"
+        "Admin-Dashboard", "Admin-Game-List", "Admin-User-Reviews", "Add-Games", "Edit-Game"
     };
 
     @Override

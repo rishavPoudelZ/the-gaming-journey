@@ -28,4 +28,27 @@ public class AdminGameListController extends HttpServlet {
 
         request.getRequestDispatcher("/WEB-INF/pages/AdminGameList.jsp").forward(request, response);
     }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        String gameIdStr = request.getParameter("gameId");
+
+        if ("delete".equals(action) && gameIdStr != null) {
+            try {
+                int gameId = Integer.parseInt(gameIdStr);
+                service.deleteGameById(gameId); // You'll implement this in your service
+            } catch (NumberFormatException | ClassNotFoundException | SQLException e) {
+                e.printStackTrace(); // Consider logging
+            } catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+
+        response.sendRedirect(request.getContextPath() + "/Admin-Game-List");
+    }
+
+    
 }

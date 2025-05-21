@@ -56,7 +56,11 @@
 					            </div>
 					            <div class="cell-actions">
 					                <a href="${pageContext.request.contextPath}/Edit-Game?id=${game.gameId}" class="edit-button">Edit</a>
-					                <button class="delete-button">Delete</button>
+					                <form method="post" action="${pageContext.request.contextPath}/Admin-Game-List" onsubmit="return confirm('Are you sure you want to delete this game?');">
+									    <input type="hidden" name="gameId" value="${game.gameId}" />
+									    <input type="hidden" name="action" value="delete" />
+									    <button type="submit" class="delete-button">Delete</button>
+									</form>
 					            </div>
 					        </div>
 					    </c:forEach>

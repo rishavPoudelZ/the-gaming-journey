@@ -224,6 +224,37 @@ public class AdminGameListService {
             if (conn != null) conn.close();
         }
     }
+    
+    public void deleteGameById(int gameId) throws Exception {
+        String deleteGenres = "DELETE FROM genres_games WHERE gameId = ?";
+        String deletePlatforms = "DELETE FROM platforms_games WHERE gameId = ?";
+        String deleteGame = "DELETE FROM games WHERE gameId = ?";
+
+        try (Connection conn = DbConfig.getDbConnection()) {
+            conn.setAutoCommit(false);
+
+            try (
+                PreparedStatement stmt1 = conn.prepareStatement(deleteGenres);
+                PreparedStatement stmt2 = conn.prepareStatement(deletePlatforms);
+                PreparedStatement stmt3 = conn.prepareStatement(deleteGame)
+            ) {
+                stmt1.setInt(1, gameId);
+                stmt1.executeUpdate();
+
+                stmt2.setInt(1, gameId);
+                stmt2.executeUpdate();
+
+                stmt3.setInt(1, gameId);
+                stmt3.executeUpdate();
+
+                conn.commit();
+            } catch (Exception e) {
+                conn.rollback();
+                throw e;
+            }
+        }
+    }
+
 
 
 
