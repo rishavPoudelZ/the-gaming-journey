@@ -47,6 +47,27 @@
       crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/HeaderFooter.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/GamePage.css">
+        <style>
+		        .star-rating form {
+				  margin: 0;
+				  padding: 0;
+				}
+				
+				.star-button {
+				  background: none;
+				  border: none;
+				  font-size: 2em;
+				  color: #ccc;
+				  cursor: pointer;
+				  padding: 0 5px;
+				}
+				
+				.star-button:hover,
+				.star-button:focus {
+				  color: gold;
+				  outline: none;
+				}
+		</style>
   </head>
   <body>
     <jsp:include page="Header.jsp" />
@@ -76,6 +97,11 @@
 	      <span class="score"><%= game.getAvgRating() %></span>
 	    </div>
 	  </div>
+	  
+	  <%
+		    Integer userRating = (Integer) request.getAttribute("userRating");
+		    if (userRating == null) userRating = 0;
+		%>
 
       <div class="interactions">
         <button id="favorite"  class="Favorite">
@@ -83,17 +109,16 @@
 		</button>
         <p>Add your Rating</p>
         <div class="star-rating">
-          <input type="radio" id="star5-3" name="rating-3" value="5" />
-          <label for="star5-3" title="5 stars">★</label>
-          <input type="radio" id="star4-3" name="rating-3" value="4" />
-          <label for="star4-3" title="4 stars">★</label>
-          <input type="radio" id="star3-3" name="rating-3" value="3" />
-          <label for="star3-3" title="3 stars">★</label>
-          <input type="radio" id="star2-3" name="rating-3" value="2" />
-          <label for="star2-3" title="2 stars">★</label>
-          <input type="radio" id="star1-3" name="rating-3" value="1" />
-          <label for="star1-3" title="1 star">★</label>
-        </div>
+		  <% for (int i = 5; i >= 1; i--) { %>
+		    <form method="post" action="<%= request.getContextPath() %>/RatingController" style="display:inline;">
+		      <input type="hidden" name="gameId" value="<%= game.getGameId() %>">
+		      <input type="hidden" name="ratingValue" value="<%= i %>">
+		      <button type="submit" title="<%= i %> star" class="star-button" style="color: <%= userRating >= i ? "gold" : "#ccc" %>;">★</button>
+		    </form>
+		  <% } %>
+		</div>
+
+
       </div>
 
 	  <div class="info-section">

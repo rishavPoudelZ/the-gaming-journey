@@ -67,7 +67,7 @@ pageEncoding="UTF-8"%>
             <hr>
 
             <p class="Login">
-                Already have an account? <a href="login">Log in</a>
+                Already have an account? <a href="Login">Log in</a>
             </p>
         </div>
     </div>

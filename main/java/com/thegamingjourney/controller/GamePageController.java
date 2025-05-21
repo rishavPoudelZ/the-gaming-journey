@@ -5,9 +5,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import com.thegamingjourney.model.Game;
 import com.thegamingjourney.service.GamePageService;
+import com.thegamingjourney.service.RatingService;
 
 import java.io.IOException;
 
@@ -24,6 +26,10 @@ public class GamePageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	HttpSession session = request.getSession(false);
+    	Integer userId = (session != null && session.getAttribute("userId") != null) 
+    	                 ? (Integer) session.getAttribute("userId") 
+    	                 : null;
     	
         String gameIdParam = request.getParameter("id");
         if (gameIdParam == null || !gameIdParam.matches("\\d+")) {
@@ -52,6 +58,17 @@ public class GamePageController extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        
+        if (userId != null) {
+            int userRating = 0;
+			try {
+				userRating = new RatingService().getUserRating(userId, gameId);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            request.setAttribute("userRating", userRating); // Pass to JSP
+        }
 
         request.getRequestDispatcher("/WEB-INF/pages/GamePage.jsp").forward(request, response);
     }
